@@ -40,3 +40,8 @@ paper/
 
 # macOS Finder metadata
 .DS_Store
+
+# Environment & Secret Keys
+.env
+.env.*
+*.env

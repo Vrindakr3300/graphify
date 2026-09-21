@@ -15,7 +15,27 @@ try:
 except ImportError:
     _HAS_GENAI = False
 
+from pathlib import Path
+
+def _load_env_file():
+    for env_path in [Path.cwd() / ".env", Path(__file__).resolve().parent.parent / ".env", Path(__file__).resolve().parent.parent.parent / ".env"]:
+        if env_path.exists():
+            try:
+                for line in env_path.read_text(encoding="utf-8").splitlines():
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        k, v = line.split("=", 1)
+                        k = k.strip()
+                        v = v.strip().strip("'\"")
+                        if k not in os.environ:
+                            os.environ[k] = v
+            except Exception:
+                pass
+
+_load_env_file()
+
 def get_api_key() -> Optional[str]:
+    _load_env_file()
     return os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
 
 class GeminiService:
