@@ -1,0 +1,697 @@
+{
+  "timestamp": "2026-09-21 16:13:20",
+  "total_questions_evaluated": 30,
+  "overall": {
+    "baseline_accuracy": 3.2,
+    "graphrank_accuracy": 14.2,
+    "accuracy_delta": "+11.0%",
+    "baseline_avg_context_tokens": 2217,
+    "graphrank_avg_context_tokens": 722,
+    "token_reduction_pct": "67.4%"
+  },
+  "by_tier": {
+    "easy": {
+      "count": 10,
+      "baseline_accuracy": 7.1,
+      "graphrank_accuracy": 40.0,
+      "delta": 32.9
+    },
+    "medium": {
+      "count": 10,
+      "baseline_accuracy": 2.5,
+      "graphrank_accuracy": 2.5,
+      "delta": 0.0
+    },
+    "hard": {
+      "count": 10,
+      "baseline_accuracy": 0.0,
+      "graphrank_accuracy": 0.0,
+      "delta": 0.0
+    }
+  },
+  "per_question_results": [
+    {
+      "id": 1,
+      "tier": "easy",
+      "question": "What does the _pick_seeds function do in graphify?",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.375,
+        "covered": [
+          "Full: 'selects BFS seed nodes'",
+          "Partial: 'uses gap_ratio to filter low-scoring nodes'"
+        ],
+        "tokens": 2163,
+        "answer_preview": "The _pick_seeds function selects seed nodes for BFS search in graphify/serve.py [1]. It uses candidate scores."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 631,
+        "answer_preview": "",
+        "multi_hop_steps": 0,
+        "timing_ms": 375.8
+      },
+      "delta": -0.375
+    },
+    {
+      "id": 2,
+      "tier": "easy",
+      "question": "Where is the graph extraction entry point located and what does it take as arguments?",
+      "key_facts_count": 3,
+      "baseline": {
+        "score": 0.167,
+        "covered": [
+          "Partial: 'extract function lives in extract.py'"
+        ],
+        "tokens": 2072,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.833,
+        "covered": [
+          "Partial: 'extract function lives in extract.py'",
+          "Full: 'takes a list of file paths'",
+          "Full: 'takes an optional root keyword argument'"
+        ],
+        "tokens": 827,
+        "answer_preview": "Based on the verified codebase context [1]:\nThe graph extraction entry point is `extract(paths, *, root=None)` in `graphify/extract.py` [1]. It takes a list of file paths to extract, and an optional k",
+        "multi_hop_steps": 0,
+        "timing_ms": 484.5
+      },
+      "delta": 0.666
+    },
+    {
+      "id": 3,
+      "tier": "easy",
+      "question": "What is the hub threshold used in _bfs traversal to prevent supernodes from exploding the search?",
+      "key_facts_count": 3,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2601,
+        "answer_preview": "The hub threshold in _bfs limits expansion through high degree nodes."
+      },
+      "graphrank": {
+        "score": 1.0,
+        "covered": [
+          "Full: 'computed from degree distribution'",
+          "Full: 'p99 of degree distribution'",
+          "Full: 'floored at 50'"
+        ],
+        "tokens": 678,
+        "answer_preview": "Based on the verified codebase context [1]:\nIn `graphify/serve.py` [1], the `_bfs` traversal computes a `hub_threshold` from the degree distribution: it takes the 99th percentile (p99) of degrees, flo",
+        "multi_hop_steps": 0,
+        "timing_ms": 347.3
+      },
+      "delta": 1.0
+    },
+    {
+      "id": 4,
+      "tier": "easy",
+      "question": "Which module generates GRAPH_REPORT.md and what inputs does it take?",
+      "key_facts_count": 3,
+      "baseline": {
+        "score": 0.167,
+        "covered": [
+          "Partial: 'generate function'"
+        ],
+        "tokens": 1270,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 1.0,
+        "covered": [
+          "Full: 'report.py generates GRAPH_REPORT.md'",
+          "Full: 'generate function'",
+          "Full: 'takes graph G, communities, cohesion scores, and community labels'"
+        ],
+        "tokens": 836,
+        "answer_preview": "Based on the verified codebase context [1]:\n`report.py` generates GRAPH_REPORT.md via the `generate(G, communities, cohesion_scores, community_labels)` function [1]. It takes the graph, detected commu",
+        "multi_hop_steps": 0,
+        "timing_ms": 484.9
+      },
+      "delta": 0.833
+    },
+    {
+      "id": 5,
+      "tier": "easy",
+      "question": "What confidence levels are assigned to extracted edges in graphify?",
+      "key_facts_count": 3,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2131,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 1.0,
+        "covered": [
+          "Full: 'EXTRACTED'",
+          "Full: 'INFERRED'",
+          "Full: 'AMBIGUOUS'"
+        ],
+        "tokens": 762,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 449.4
+      },
+      "delta": 1.0
+    },
+    {
+      "id": 6,
+      "tier": "easy",
+      "question": "What does the _strip_diacritics function do and which library does it use?",
+      "key_facts_count": 3,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2676,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.167,
+        "covered": [
+          "Partial: 'normalizes text and strips accents/diacritics'"
+        ],
+        "tokens": 876,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 347.6
+      },
+      "delta": 0.167
+    },
+    {
+      "id": 7,
+      "tier": "easy",
+      "question": "What is the purpose of the _get_trigram_index function in serve.py?",
+      "key_facts_count": 3,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2917,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 738,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 271.5
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 8,
+      "tier": "easy",
+      "question": "Which module handles community clustering in graphify?",
+      "key_facts_count": 3,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 1606,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 635,
+        "answer_preview": "Based on the verified codebase context [1]:\nDefault ``graph.json`` path under the configured output dir. 374: [1].",
+        "multi_hop_steps": 0,
+        "timing_ms": 463.5
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 9,
+      "tier": "easy",
+      "question": "What function in security.py validates that graph paths stay inside graphify-out?",
+      "key_facts_count": 3,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2507,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 766,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 484.2
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 10,
+      "tier": "easy",
+      "question": "How does graphify handle token budgeting in _subgraph_to_text?",
+      "key_facts_count": 3,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 1833,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 685,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 375.9
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 11,
+      "tier": "medium",
+      "question": "How does _score_query calculate term coverage and why is the coverage ratio squared?",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2452,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 596,
+        "answer_preview": "",
+        "multi_hop_steps": 0,
+        "timing_ms": 369.7
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 12,
+      "tier": "medium",
+      "question": "How does graphify prevent circular import dependencies from crashing the analyzer?",
+      "key_facts_count": 3,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 1728,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 705,
+        "answer_preview": "",
+        "multi_hop_steps": 0,
+        "timing_ms": 470.8
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 13,
+      "tier": "medium",
+      "question": "What is the difference between _bfs and _dfs search modes in graphify/serve.py?",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.125,
+        "covered": [
+          "Partial: 'both respect hub threshold on non-seed nodes'"
+        ],
+        "tokens": 2537,
+        "answer_preview": "The hub threshold in _bfs limits expansion through high degree nodes."
+      },
+      "graphrank": {
+        "score": 0.125,
+        "covered": [
+          "Partial: 'both respect hub threshold on non-seed nodes'"
+        ],
+        "tokens": 678,
+        "answer_preview": "Based on the verified codebase context [1]:\nIn `graphify/serve.py` [1], the `_bfs` traversal computes a `hub_threshold` from the degree distribution: it takes the 99th percentile (p99) of degrees, flo",
+        "multi_hop_steps": 0,
+        "timing_ms": 377.7
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 14,
+      "tier": "medium",
+      "question": "Why does _complete_induced_edges need to be called after BFS traversal?",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2350,
+        "answer_preview": "The hub threshold in _bfs limits expansion through high degree nodes."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 711,
+        "answer_preview": "Based on the verified codebase context [1]:\nIn `graphify/serve.py` [1], the `_bfs` traversal computes a `hub_threshold` from the degree distribution: it takes the 99th percentile (p99) of degrees, flo",
+        "multi_hop_steps": 0,
+        "timing_ms": 396.5
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 15,
+      "tier": "medium",
+      "question": "How does graphify handle Chinese language text during query tokenization?",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 1915,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 759,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 461.7
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 16,
+      "tier": "medium",
+      "question": "What is the role of _traversal_view when loading a directed graph in serve.py?",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2628,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 622,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 455.8
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 17,
+      "tier": "medium",
+      "question": "How does graphify compute IDF weights in _compute_idf and how are they cached?",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2040,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 686,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 363.4
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 18,
+      "tier": "medium",
+      "question": "What is the semantic cache mechanism in cache.py and how does it speed up extraction?",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.125,
+        "covered": [
+          "Partial: 'only extracts modified or new files'"
+        ],
+        "tokens": 2400,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.125,
+        "covered": [
+          "Partial: 'caches extracted nodes and edges by file hash'"
+        ],
+        "tokens": 710,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 263.1
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 19,
+      "tier": "medium",
+      "question": "How does the watch module in watch.py monitor file changes and debounce rebuilds?",
+      "key_facts_count": 3,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2232,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 753,
+        "answer_preview": "Based on the verified codebase context [1]:\ngraphify command dispatch \u2014 every non-install subcommand. 5: module. The path-redirect (`graphify <path>` -> extract) re-enters via a lazy 6: import of main",
+        "multi_hop_steps": 0,
+        "timing_ms": 463.6
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 20,
+      "tier": "medium",
+      "question": "How does _resolve_context_filters filter graph traversals by edge context?",
+      "key_facts_count": 3,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2233,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 673,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 371.9
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 21,
+      "tier": "hard",
+      "question": "Trace the complete end-to-end execution path from a user query in graphify query CLI to the final rendered text output.",
+      "key_facts_count": 6,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 1734,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 737,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 399.3
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 22,
+      "tier": "hard",
+      "question": "How does graphify handle relational intent words like 'calls' or 'imports' in queries so they don't corrupt seed selection?",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2443,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 870,
+        "answer_preview": "",
+        "multi_hop_steps": 0,
+        "timing_ms": 407.2
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 23,
+      "tier": "hard",
+      "question": "Explain how the AST extraction second pass infers 'calls' edges between symbols across files.",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2300,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 839,
+        "answer_preview": "Based on the verified codebase context [1]:\nIn `graphify/serve.py` [1], the `_bfs` traversal computes a `hub_threshold` from the degree distribution: it takes the 99th percentile (p99) of degrees, flo",
+        "multi_hop_steps": 0,
+        "timing_ms": 282.8
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 24,
+      "tier": "hard",
+      "question": "How does graphify ensure security when processing untrusted repositories with malicious node names or external URLs?",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2146,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 721,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 407.9
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 25,
+      "tier": "hard",
+      "question": "Describe the community cohesion scoring algorithm and how community labels are derived.",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2109,
+        "answer_preview": "The _pick_seeds function selects seed nodes for BFS search in graphify/serve.py [1]. It uses candidate scores."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 595,
+        "answer_preview": "",
+        "multi_hop_steps": 0,
+        "timing_ms": 350.5
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 26,
+      "tier": "hard",
+      "question": "How does graphify handle multi-graph versus simple graph data representations when exporting to JSON and NetworkX?",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 1771,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 753,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 487.4
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 27,
+      "tier": "hard",
+      "question": "What is the God Nodes analysis in analyze.py and how does it detect architectural anti-patterns?",
+      "key_facts_count": 3,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2473,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 641,
+        "answer_preview": "",
+        "multi_hop_steps": 0,
+        "timing_ms": 368.9
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 28,
+      "tier": "hard",
+      "question": "Explain the difference between how LOCOMO benchmark memory suite and crosstool code suite evaluate retrieval.",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2793,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 832,
+        "answer_preview": "Based on the verified codebase context [1]:\nIn `graphify/serve.py` [1], the `_bfs` traversal computes a `hub_threshold` from the degree distribution: it takes the 99th percentile (p99) of degrees, flo",
+        "multi_hop_steps": 0,
+        "timing_ms": 366.0
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 29,
+      "tier": "hard",
+      "question": "How does graphify resolve path::Symbol queries to disambiguate identical function names across different files?",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2158,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 666,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 514.3
+      },
+      "delta": 0.0
+    },
+    {
+      "id": 30,
+      "tier": "hard",
+      "question": "How does the work-memory learning overlay sidecar attach to graph.json and how is it rendered in NODE outputs?",
+      "key_facts_count": 4,
+      "baseline": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 2298,
+        "answer_preview": "The extract function extracts symbols from files."
+      },
+      "graphrank": {
+        "score": 0.0,
+        "covered": [],
+        "tokens": 683,
+        "answer_preview": "Based on the verified codebase context [1]:\nGraphify edges have three confidence levels [1]: EXTRACTED (explicit in AST), INFERRED (deduced via call-graph second pass), and AMBIGUOUS (flagged for revi",
+        "multi_hop_steps": 0,
+        "timing_ms": 485.2
+      },
+      "delta": 0.0
+    }
+  ]
+}

@@ -1,0 +1,381 @@
+[
+  {
+    "id": 1,
+    "tier": "easy",
+    "question": "What does the _pick_seeds function do in graphify?",
+    "key_facts": [
+      "selects BFS seed nodes",
+      "uses gap_ratio to filter low-scoring nodes",
+      "prevents noise terms from displacing identifier matches",
+      "guarantees seeds for distinct query terms"
+    ],
+    "target_symbols": ["_pick_seeds", "graphify/serve.py"],
+    "notes": "Direct symbol lookup in serve.py"
+  },
+  {
+    "id": 2,
+    "tier": "easy",
+    "question": "Where is the graph extraction entry point located and what does it take as arguments?",
+    "key_facts": [
+      "extract function lives in extract.py",
+      "takes a list of file paths",
+      "takes an optional root keyword argument"
+    ],
+    "target_symbols": ["extract", "graphify/extract.py"],
+    "notes": "Fundamental API signature"
+  },
+  {
+    "id": 3,
+    "tier": "easy",
+    "question": "What is the hub threshold used in _bfs traversal to prevent supernodes from exploding the search?",
+    "key_facts": [
+      "computed from degree distribution",
+      "p99 of degree distribution",
+      "floored at 50"
+    ],
+    "target_symbols": ["_bfs", "hub_threshold", "graphify/serve.py"],
+    "notes": "Traverser tuning constant"
+  },
+  {
+    "id": 4,
+    "tier": "easy",
+    "question": "Which module generates GRAPH_REPORT.md and what inputs does it take?",
+    "key_facts": [
+      "report.py generates GRAPH_REPORT.md",
+      "generate function",
+      "takes graph G, communities, cohesion scores, and community labels"
+    ],
+    "target_symbols": ["generate", "graphify/report.py"],
+    "notes": "Core reporting pipeline stage"
+  },
+  {
+    "id": 5,
+    "tier": "easy",
+    "question": "What confidence levels are assigned to extracted edges in graphify?",
+    "key_facts": [
+      "EXTRACTED",
+      "INFERRED",
+      "AMBIGUOUS"
+    ],
+    "target_symbols": ["validate.py", "extract.py", "ARCHITECTURE.md"],
+    "notes": "Extraction schema contract"
+  },
+  {
+    "id": 6,
+    "tier": "easy",
+    "question": "What does the _strip_diacritics function do and which library does it use?",
+    "key_facts": [
+      "normalizes text and strips accents/diacritics",
+      "uses unicodedata with NFKD normalization",
+      "combining characters are filtered"
+    ],
+    "target_symbols": ["_strip_diacritics", "graphify/serve.py"],
+    "notes": "Text normalization helper"
+  },
+  {
+    "id": 7,
+    "tier": "easy",
+    "question": "What is the purpose of the _get_trigram_index function in serve.py?",
+    "key_facts": [
+      "lazily builds character trigram index",
+      "maps trigrams to node positions",
+      "cached on G.graph to auto-invalidate on reload"
+    ],
+    "target_symbols": ["_get_trigram_index", "graphify/serve.py"],
+    "notes": "Pre-filtering index"
+  },
+  {
+    "id": 8,
+    "tier": "easy",
+    "question": "Which module handles community clustering in graphify?",
+    "key_facts": [
+      "cluster.py",
+      "cluster(G) entry point",
+      "returns dictionary mapping community_id to node lists without mutating graph"
+    ],
+    "target_symbols": ["cluster", "graphify/cluster.py"],
+    "notes": "Community detection stage"
+  },
+  {
+    "id": 9,
+    "tier": "easy",
+    "question": "What function in security.py validates that graph paths stay inside graphify-out?",
+    "key_facts": [
+      "validate_graph_path",
+      "ensures path resolves inside graphify-out",
+      "prevents path traversal outside authorized directory"
+    ],
+    "target_symbols": ["validate_graph_path", "graphify/security.py"],
+    "notes": "Security sandbox check"
+  },
+  {
+    "id": 10,
+    "tier": "easy",
+    "question": "How does graphify handle token budgeting in _subgraph_to_text?",
+    "key_facts": [
+      "cuts output at token budget",
+      "approximates 3 characters per token",
+      "preserves seed nodes from being truncated"
+    ],
+    "target_symbols": ["_subgraph_to_text", "graphify/serve.py"],
+    "notes": "Context window constraint handler"
+  },
+  {
+    "id": 11,
+    "tier": "medium",
+    "question": "How does _score_query calculate term coverage and why is the coverage ratio squared?",
+    "key_facts": [
+      "counts matching query terms against node label",
+      "scales tiered scores by (matched / n_terms) squared",
+      "squaring prevents single generic words from outscoring multi-term matches",
+      "exact tier is 10x higher than prefix tier so squaring balances the ratio"
+    ],
+    "target_symbols": ["_score_query", "graphify/serve.py"],
+    "notes": "Complex scoring arithmetic"
+  },
+  {
+    "id": 12,
+    "tier": "medium",
+    "question": "How does graphify prevent circular import dependencies from crashing the analyzer?",
+    "key_facts": [
+      "find_import_cycles function in analyze.py",
+      "identifies cycles using NetworkX simple cycles",
+      "reports cycles rather than crashing"
+    ],
+    "target_symbols": ["find_import_cycles", "graphify/analyze.py"],
+    "notes": "Static analysis cycle detection"
+  },
+  {
+    "id": 13,
+    "tier": "medium",
+    "question": "What is the difference between _bfs and _dfs search modes in graphify/serve.py?",
+    "key_facts": [
+      "BFS uses breadth-first frontier expansion layer by layer",
+      "DFS uses stack-based depth traversal up to max depth",
+      "both respect hub threshold on non-seed nodes",
+      "both invoke _complete_induced_edges to restore cross-edges"
+    ],
+    "target_symbols": ["_bfs", "_dfs", "graphify/serve.py"],
+    "notes": "Algorithmic comparison"
+  },
+  {
+    "id": 14,
+    "tier": "medium",
+    "question": "Why does _complete_induced_edges need to be called after BFS traversal?",
+    "key_facts": [
+      "BFS only records edges that discover unvisited nodes",
+      "edges between two already visited seeds are dropped by basic BFS",
+      "scans incident edges to reconstruct complete induced subgraph",
+      "deduplicates directed vs undirected edge keys"
+    ],
+    "target_symbols": ["_complete_induced_edges", "graphify/serve.py"],
+    "notes": "Sub-graph topological completeness"
+  },
+  {
+    "id": 15,
+    "tier": "medium",
+    "question": "How does graphify handle Chinese language text during query tokenization?",
+    "key_facts": [
+      "detects Chinese characters with unicode range",
+      "uses jieba segmentation when available",
+      "falls back to 2-character n-grams if jieba is not installed",
+      "preserves original multi-char term for exact matching"
+    ],
+    "target_symbols": ["_has_chinese", "_segment_chinese", "graphify/serve.py"],
+    "notes": "Multilingual NLP tokenization"
+  },
+  {
+    "id": 16,
+    "tier": "medium",
+    "question": "What is the role of _traversal_view when loading a directed graph in serve.py?",
+    "key_facts": [
+      "creates an undirected copy of G for traversal",
+      "stashes true direction markers _src and _tgt on edges",
+      "allows BFS to follow callers and callees alike",
+      "preserves render order while finding bidirectionally connected nodes"
+    ],
+    "target_symbols": ["_traversal_view", "graphify/serve.py"],
+    "notes": "Graph transformation for bidirectional exploration"
+  },
+  {
+    "id": 17,
+    "tier": "medium",
+    "question": "How does graphify compute IDF weights in _compute_idf and how are they cached?",
+    "key_facts": [
+      "IDF formula log(1 + N / (1 + df))",
+      "cached in G.graph['_idf_cache']",
+      "auto-invalidates when graph is reloaded",
+      "common terms receive low weights while rare symbols receive high weights"
+    ],
+    "target_symbols": ["_compute_idf", "graphify/serve.py"],
+    "notes": "Information retrieval weighting"
+  },
+  {
+    "id": 18,
+    "tier": "medium",
+    "question": "What is the semantic cache mechanism in cache.py and how does it speed up extraction?",
+    "key_facts": [
+      "check_semantic_cache and save_semantic_cache",
+      "caches extracted nodes and edges by file hash",
+      "only extracts modified or new files",
+      "saves LLM credits and AST parsing time"
+    ],
+    "target_symbols": ["check_semantic_cache", "graphify/cache.py"],
+    "notes": "Incremental caching pipeline"
+  },
+  {
+    "id": 19,
+    "tier": "medium",
+    "question": "How does the watch module in watch.py monitor file changes and debounce rebuilds?",
+    "key_facts": [
+      "uses watchdog if available or periodic check_update",
+      "debounces rapid file saves with default 3.0 second window",
+      "queues modified files and triggers incremental re-extraction"
+    ],
+    "target_symbols": ["watch", "check_update", "graphify/watch.py"],
+    "notes": "File system watcher daemon"
+  },
+  {
+    "id": 20,
+    "tier": "medium",
+    "question": "How does _resolve_context_filters filter graph traversals by edge context?",
+    "key_facts": [
+      "normalizes context filter aliases like param, arg, return, calls",
+      "infers context filters heuristically from query words",
+      "subgraphs edges matching specified context relation types"
+    ],
+    "target_symbols": ["_resolve_context_filters", "_filter_graph_by_context", "graphify/serve.py"],
+    "notes": "Edge relation context filtering"
+  },
+  {
+    "id": 21,
+    "tier": "hard",
+    "question": "Trace the complete end-to-end execution path from a user query in graphify query CLI to the final rendered text output.",
+    "key_facts": [
+      "CLI calls _score_query to compute IDF and match scores",
+      "_pick_seeds selects start nodes with gap_ratio threshold",
+      "_traversal_view creates undirected view with stashed _src/_tgt",
+      "_bfs or _dfs traverses neighbors respecting hub threshold",
+      "_complete_induced_edges completes missing cross-edges",
+      "_subgraph_to_text formats nodes and edges within token budget"
+    ],
+    "target_symbols": ["_query_graph_text", "cli.py", "serve.py"],
+    "notes": "Requires synthesizing 6 disparate functions across modules"
+  },
+  {
+    "id": 22,
+    "tier": "hard",
+    "question": "How does graphify handle relational intent words like 'calls' or 'imports' in queries so they don't corrupt seed selection?",
+    "key_facts": [
+      "_RELATIONAL_INTENT_TERMS defines set of verb words",
+      "_query_terms keeps them because identifiers could be named calls",
+      "_query_graph_text filters them out from best_seed_by_term guarantee",
+      "prevents incidental prefix matches from making arbitrary functions into BFS seeds"
+    ],
+    "target_symbols": ["_RELATIONAL_INTENT_TERMS", "_query_graph_text", "graphify/serve.py"],
+    "notes": "Subtle bugfix logic spanning multiple functions"
+  },
+  {
+    "id": 23,
+    "tier": "hard",
+    "question": "Explain how the AST extraction second pass infers 'calls' edges between symbols across files.",
+    "key_facts": [
+      "first pass extracts symbol definitions and explicit imports",
+      "second pass inspects function invocation call nodes",
+      "matches callee name against known symbol table and imported identifiers",
+      "marks edge confidence as INFERRED"
+    ],
+    "target_symbols": ["extract.py", "ARCHITECTURE.md", "symbol_resolution.py"],
+    "notes": "Cross-file symbol linking"
+  },
+  {
+    "id": 24,
+    "tier": "hard",
+    "question": "How does graphify ensure security when processing untrusted repositories with malicious node names or external URLs?",
+    "key_facts": [
+      "sanitize_label strips control characters and caps length to 256",
+      "validate_url blocks non-http/https and file:// redirect exploits",
+      "safe_fetch enforces payload size caps and timeouts",
+      "validate_graph_path restricts paths strictly inside graphify-out"
+    ],
+    "target_symbols": ["security.py", "SECURITY.md", "sanitize_label"],
+    "notes": "Adversarial threat model defense"
+  },
+  {
+    "id": 25,
+    "tier": "hard",
+    "question": "Describe the community cohesion scoring algorithm and how community labels are derived.",
+    "key_facts": [
+      "evaluates internal edge density vs external cut edges",
+      "computes modularity or cohesion ratio",
+      "identifies central dominant nodes per community to synthesize human-readable labels",
+      "written to GRAPH_REPORT.md and community wiki"
+    ],
+    "target_symbols": ["cluster.py", "report.py", "wiki.py"],
+    "notes": "Graph theory clustering metrics"
+  },
+  {
+    "id": 26,
+    "tier": "hard",
+    "question": "How does graphify handle multi-graph versus simple graph data representations when exporting to JSON and NetworkX?",
+    "key_facts": [
+      "detects multigraph attribute in JSON",
+      "converts links to edges preserving parallel edge keys",
+      "handles node_link_graph compatibility differences across NetworkX versions",
+      "ensures directed logical flag is preserved for renderers"
+    ],
+    "target_symbols": ["_load_graph", "multigraph_compat.py", "build.py"],
+    "notes": "Serialization and graph type compatibility"
+  },
+  {
+    "id": 27,
+    "tier": "hard",
+    "question": "What is the God Nodes analysis in analyze.py and how does it detect architectural anti-patterns?",
+    "key_facts": [
+      "god_nodes function measures degree centrality and betweenness",
+      "identifies nodes with disproportionate incoming and outgoing connections",
+      "flags them as potential maintenance bottlenecks in GRAPH_REPORT.md"
+    ],
+    "target_symbols": ["god_nodes", "analyze.py", "report.py"],
+    "notes": "Architectural smell detection"
+  },
+  {
+    "id": 28,
+    "tier": "hard",
+    "question": "Explain the difference between how LOCOMO benchmark memory suite and crosstool code suite evaluate retrieval.",
+    "key_facts": [
+      "LOCOMO evaluates conversational long-term memory QA accuracy and recall@10",
+      "uses Kimi K2.6 reader and judge across key facts",
+      "crosstool code suite runs multi-turn coding agent on ERPNext codebase",
+      "evaluates AST checkpoints and key-fact coverage across 15 years"
+    ],
+    "target_symbols": ["BENCHMARKS.md", "benchmark.py"],
+    "notes": "Cross-suite benchmark methodology"
+  },
+  {
+    "id": 29,
+    "tier": "hard",
+    "question": "How does graphify resolve path::Symbol queries to disambiguate identical function names across different files?",
+    "key_facts": [
+      "_resolve_path_scoped_symbol function in serve.py",
+      "parses path prefix and symbol name",
+      "filters trigram candidates by matching source_file tokens and symbol tokens",
+      "resolves to exact local declaration rather than colliding generic names"
+    ],
+    "target_symbols": ["_resolve_path_scoped_symbol", "serve.py"],
+    "notes": "Path-scoped symbol lookup"
+  },
+  {
+    "id": 30,
+    "tier": "hard",
+    "question": "How does the work-memory learning overlay sidecar attach to graph.json and how is it rendered in NODE outputs?",
+    "key_facts": [
+      "load_learning_overlay reads sidecar file next to graph.json",
+      "stashed in G.graph['_learning_overlay']",
+      "annotates NODE lines with learning=status and stale markers",
+      "preserves byte-identical un-annotated output when no sidecar exists"
+    ],
+    "target_symbols": ["_load_graph", "_subgraph_to_text", "reflect.py", "serve.py"],
+    "notes": "Memory overlay attachment architecture"
+  }
+]
