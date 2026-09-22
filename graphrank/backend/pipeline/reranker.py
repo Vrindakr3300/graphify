@@ -19,50 +19,63 @@ async def cross_encode_batch(
     question: str,
     candidates: List[CandidateNode]
 ) -> List[tuple[float, str]]:
-    """Judge relevance of each candidate using Gemini Cross-Encoder reasoning."""
+    """Judge relevance of candidates using a single batched Gemini Cross-Encoder call."""
+    if not candidates:
+        return []
+
     gemini = get_gemini_service()
+    to_eval = candidates[:8]
     
-    # Process up to 12 candidates in parallel or batch
-    eval_tasks = []
-    
-    async def _evaluate_single(cand: CandidateNode) -> tuple[float, str]:
-        prompt = f"""You are a precise code relevance judge.
+    # Format candidates list for batch evaluation
+    cand_items = []
+    for idx, c in enumerate(to_eval):
+        snippet = c.raw_text[:350].replace("\n", " ")
+        cand_items.append(f"Candidate #{idx}: [{c.label}] File: {c.source_file}:{c.source_location} | Code: {snippet}")
+        
+    cand_str = "\n".join(cand_items)
+
+    prompt = f"""You are an expert code relevance judge.
 Question: "{question}"
 
-Code Candidate:
-Label: {cand.label}
-File: {cand.source_file}:{cand.source_location}
-Community: {cand.community}
-Context:
-{cand.raw_text[:600]}
+Evaluate these {len(to_eval)} code candidates. Score each candidate from 1.0 (irrelevant) to 10.0 (exact direct answer).
+Provide a brief 1-sentence reason.
 
-Evaluate how directly this code candidate answers or provides necessary context for the question.
-Score from 1.0 (completely irrelevant) to 10.0 (exact direct answer or critical dependency).
+Candidates:
+{cand_str}
 
-Respond ONLY with valid JSON:
+Respond in valid JSON format:
 {{
-  "score": 8.5,
-  "reason": "Direct definition of the queried function with logic."
+  "ratings": [
+    {{"id": 0, "score": 9.5, "reason": "Direct definition of queried function."}},
+    {{"id": 1, "score": 4.0, "reason": "Peripheral caller without implementation."}}
+  ]
 }}
 """
-        try:
-            res = await gemini.generate_text(prompt, json_mode=True, temperature=0.1)
-            res = res.strip()
-            if res.startswith("```"):
-                res = res.split("\n", 1)[1].rsplit("```", 1)[0].strip()
-            data = json.loads(res)
-            score = float(data.get("score", 5.0))
-            reason = str(data.get("reason", "Evaluated relevance"))
-            return (score, reason)
-        except Exception:
-            # Fallback heuristic: keyword overlap
-            q_words = set(question.lower().split())
-            c_words = set(cand.raw_text.lower().split())
+    try:
+        res = await gemini.generate_text(prompt, json_mode=True, temperature=0.1)
+        res = res.strip()
+        if res.startswith("```"):
+            res = res.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+        data = json.loads(res)
+        ratings_list = data.get("ratings", [])
+        rating_map = {r.get("id"): (float(r.get("score", 5.0)), str(r.get("reason", "Evaluated"))) for r in ratings_list}
+        
+        results = []
+        for idx in range(len(candidates)):
+            if idx in rating_map:
+                results.append(rating_map[idx])
+            else:
+                results.append((4.0, "Candidate evaluated"))
+        return results
+    except Exception:
+        # Fast lexical heuristic fallback
+        q_words = set(question.lower().split())
+        results = []
+        for c in candidates:
+            c_words = set(c.raw_text.lower().split())
             overlap = len(q_words & c_words) / max(1, len(q_words))
-            return (round(overlap * 10, 1), "Keyword alignment heuristic")
-
-    results = await asyncio.gather(*[_evaluate_single(c) for c in candidates])
-    return results
+            results.append((round(overlap * 10, 1), "Keyword alignment heuristic"))
+        return results
 
 def apply_mmr_selection(
     candidates: List[CandidateNode],

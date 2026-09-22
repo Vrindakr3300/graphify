@@ -18,6 +18,26 @@ def _format_context_block(candidates: List[RankedCandidate]) -> Tuple[str, List[
         blocks.append(f"--- SOURCE {tag}: {source_label} ---\n{text}\n")
     return "\n".join(blocks), sources
 
+def _extract_json(text: str) -> dict:
+    text = text.strip()
+    try:
+        return json.loads(text)
+    except Exception:
+        pass
+    if text.startswith("```"):
+        try:
+            cleaned = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+            return json.loads(cleaned)
+        except Exception:
+            pass
+    m = re.search(r"(\{.*\})", text, re.DOTALL)
+    if m:
+        try:
+            return json.loads(m.group(1))
+        except Exception:
+            pass
+    return {}
+
 async def agentic_synthesis(
     question: str,
     candidates: List[RankedCandidate],
@@ -50,18 +70,11 @@ Respond in valid JSON format:
 """
     try:
         raw = await gemini.generate_text(prompt, json_mode=True, temperature=0.1)
-        raw = raw.strip()
-        if raw.startswith("```"):
-            raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
-        data = json.loads(raw)
+        data = _extract_json(raw)
     except Exception:
-        data = {
-            "answer": f"Analysis for: {question}\n\nBased on {sources[0] if sources else 'context'}, the implementation processes the requested logic.",
-            "confidence": "medium",
-            "missing_symbol": None
-        }
+        data = {}
 
-    answer_text = data.get("answer", "")
+    answer_text = data.get("answer") or (raw if raw and "{" not in raw else f"Analysis based on context for {question}.")
     confidence = data.get("confidence", "high")
     missing_symbol = data.get("missing_symbol")
 

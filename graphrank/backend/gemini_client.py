@@ -56,10 +56,12 @@ class GeminiService:
         self,
         prompt: str,
         system_instruction: Optional[str] = None,
-        model: str = "gemini-2.0-flash",
+        model: Optional[str] = None,
         temperature: float = 0.2,
         json_mode: bool = False
     ) -> str:
+        if not model:
+            model = os.environ.get("GEMINI_MODEL", "gemini-flash-latest")
         if not self.is_configured:
             return self._mock_generation(prompt, json_mode)
 

@@ -38,7 +38,16 @@ async def compress_context_batch(
     question: str,
     ranked_candidates: List[RankedCandidate]
 ) -> List[RankedCandidate]:
-    """Stage 4: Parallel context compression for all top ranked candidates."""
-    tasks = [compress_candidate(question, rc) for rc in ranked_candidates]
-    compressed_results = await asyncio.gather(*tasks)
+    """Stage 4: Context compression for top ranked candidates."""
+    # Compress the top 2-3 most critical candidates with Gemini, trim the rest
+    compressed_results = []
+    for idx, rc in enumerate(ranked_candidates):
+        if idx < 2 and len(rc.node.raw_text) > 250:
+            compressed = await compress_candidate(question, rc)
+            compressed_results.append(compressed)
+        else:
+            # Fast local extraction: signature + docstring + first 10 lines
+            lines = rc.node.raw_text.split("\n")
+            rc.compressed_text = "\n".join(lines[:15])
+            compressed_results.append(rc)
     return compressed_results
